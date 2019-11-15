@@ -1,10 +1,9 @@
 const router = require('express').Router();
 const UserHelper = require('./auth-model');
-const session = require('express-session');
+
 
 //requiring middleware
 const bcrypt = require('bcryptjs');
-const bcryption = require('../middleware/bcrypt');
 
 
 const cookielock = require('./authenticate-middleware');
@@ -22,7 +21,7 @@ router.post('/register', (req, res) => {
   const hash = bcrypt.hashSync(credentials.password, 14);
   credentials.password = hash;
   UserHelper.register(req.body)
-  .then(data => {
+  .then(() => {
     res.status(201).json({message: `New user, with username ${req.body.username} has been created! Good luck!`})
   })
   .catch(err => {

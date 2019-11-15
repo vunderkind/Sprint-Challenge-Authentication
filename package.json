@@ -6,6 +6,10 @@
   "scripts": {
     "server": "nodemon index.js"
   },
+  "test": "jest --watch --verbose",
+  "jest": {
+    "testEnvirnoment": "node"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LambdaSchool/Sprint-Challenge-Authentication.git"
@@ -24,9 +28,11 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "helmet": "^3.20.0",
+    "jest": "^24.9.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.19.2",
-    "sqlite3": "^4.1.0"
+    "sqlite3": "^4.1.0",
+    "supertest": "^4.0.2"
   },
   "devDependencies": {
     "eslint": "^6.6.0",
