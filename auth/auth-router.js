@@ -1,12 +1,22 @@
 const router = require('express').Router();
 const UserHelper = require('./auth-model');
+const session = require('express-session');
 
-//requiring dependencies
+//requiring middleware
 const bcrypt = require('bcryptjs');
 const bcryption = require('../middleware/bcrypt');
 
 
-router.get('/', (req, res) => {
+function cookielock(req, res, next) {
+  if (req.session && req.session.userID) {
+    next();
+  } else {
+    res.status(401).json({ message: 'you shall not pass!!' });
+  }
+}
+
+
+router.get('/', cookielock, (req, res) => {
   UserHelper.getAll()
   .then(data => {
     res.status(200).json(data);
@@ -33,9 +43,22 @@ router.post('/login', (req, res) => {
   if(!user || !bcrypt.compareSync(password, user.password)) {
       return res.status(401).json({error: `Incorrect Creds`})
   } else {
+      req.session.userID = user;
       return res.status(200).json({message: `Welcome, ${user.username}!`})
   }
   })
+});
+
+router.get('/logout', (req, res) => {
+  if (req.session) {
+    req.session.destroy(err => {
+      if (err) {
+        res.send('error logging out');
+      } else {
+        res.send('good bye');
+      }
+    });
+  }
 });
 
 module.exports = router;
