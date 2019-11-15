@@ -7,13 +7,7 @@ const bcrypt = require('bcryptjs');
 const bcryption = require('../middleware/bcrypt');
 
 
-function cookielock(req, res, next) {
-  if (req.session && req.session.userID) {
-    next();
-  } else {
-    res.status(401).json({ message: 'you shall not pass!!' });
-  }
-}
+const cookielock = require('./authenticate-middleware');
 
 
 router.get('/', cookielock, (req, res) => {

@@ -3,6 +3,10 @@
   before granting access to the next middleware/route handler
 */
 
-module.exports = (req, res, next) => {
-  res.status(401).json({ you: 'shall not pass!' });
-};
+module.exports = function cookielock(req, res, next) {
+  if (req.session && req.session.userID) {
+    next();
+  } else {
+    res.status(401).json({ message: 'you shall not pass!!' });
+  }
+}
